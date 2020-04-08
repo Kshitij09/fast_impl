@@ -1,7 +1,8 @@
 {
   "Overview": "/",
   "Tutorial": {
-    "Explore Architectures": "/explore_cnn_architectures"      
+    "Overview":"/tutorial",
+    "Explore Architectures": "/tutorial.arch_explore"      
   },
   "Core": "/core"
 }
