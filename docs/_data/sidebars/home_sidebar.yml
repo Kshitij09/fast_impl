@@ -5,17 +5,20 @@
 # Instead edit ../../sidebar.json
 entries:
 - folders:
+  - output: web,pdf
+    title: Overview
+    url: /
   - folderitems:
     - output: web,pdf
       title: Overview
-      url: /
+      url: /tutorial
     - output: web,pdf
-      title: Tutorial- Exploring wide range of CNN architectures
-      url: /explore_cnn_architectures
-    - output: web,pdf
-      title: Core
-      url: /core
+      title: Explore Architectures
+      url: /tutorial.arch_explore
     output: web
-    title: fast_impl
+    title: Tutorial
+  - output: web,pdf
+    title: Core
+    url: /core
   output: web
   title: Sidebar
