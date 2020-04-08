@@ -2,9 +2,10 @@
 
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
-index = {}
+index = {"get_module": "00_arch_summary.ipynb",
+         "arch_summary": "00_arch_summary.ipynb"}
 
-modules = []
+modules = ["core.py"]
 
 doc_url = "https://Kshitij09.github.io/fast_impl/"
 

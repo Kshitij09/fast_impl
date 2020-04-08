@@ -10,8 +10,8 @@ entries:
       title: Overview
       url: /
     - output: web,pdf
-      title: Core
-      url: /core
+      title: Title
+      url: /arch_summary
     output: web
     title: fast_impl
   output: web
