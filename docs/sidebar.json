@@ -1,7 +1,11 @@
 {
   "Overview": "/",
   "Tutorial": {
-    "Explore Architectures": "/explore_cnn_architectures"      
+    "Overview":"/tutorial",
+    "Explore Architectures": "/tutorial.arch_explore",
+    "Stanford Dogs Wrangling":"/tutorial.stanford_dogs_wrangling"    
   },
-  "Core": "/core"
+  "Core": {
+    "Overview": "/core"
+  }
 }
