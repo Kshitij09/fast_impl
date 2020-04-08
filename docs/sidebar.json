@@ -1,6 +1,7 @@
 {
-  "fast_impl": {
-    "Overview": "/",
-    "Title": "/arch_summary"
-  }
+  "Overview": "/",
+  "Tutorial": {
+    "Explore Architectures": "/explore_cnn_architectures"      
+  },
+  "Core": "/core"
 }
