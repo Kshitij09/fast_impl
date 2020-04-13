@@ -7,7 +7,7 @@ from fastai2.vision.all import *
 
 # Cell
 def _is_sequential(o): return o.__class__.__name__=='Sequential'
-def _is_fn(o): return type(o)==types.FunctionType
+def _is_fn(o): return isinstance(o,(types.FunctionType, functools.partial))
 
 def get_module(o,i):
   "Recursively get the module from list of indices"
