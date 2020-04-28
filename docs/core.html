@@ -59,7 +59,7 @@ description: "Core utility functions used in the library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_module" class="doc_header"><code>get_module</code><a href="https://github.com/Kshitij09/fast_impl/tree/master/fast_impl/core.py#L13" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_module</code>(<strong><code>o</code></strong>, <strong><code>i</code></strong>)</p>
+<h4 id="get_module" class="doc_header"><code>get_module</code><a href="https://github.com/Kshitij09/fast_impl/tree/master/fast_impl/core.py#L14" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_module</code>(<strong><code>o</code></strong>, <strong><code>i</code></strong>)</p>
 </blockquote>
 <p>Recursively get the module from list of indices</p>
 
@@ -98,18 +98,31 @@ description: "Core utility functions used in the library"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="arch_summary" class="doc_header"><code>arch_summary</code><a href="https://github.com/Kshitij09/fast_impl/tree/master/fast_impl/core.py#L22" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>arch_summary</code>(<strong><code>arch</code></strong>, <strong><code>idx</code></strong>=<em><code>None</code></em>, <strong><code>verbose</code></strong>:<code>bool</code>=<em><code>False</code></em>)</p>
+<h4 id="arch_summary" class="doc_header"><code>arch_summary</code><a href="https://github.com/Kshitij09/fast_impl/tree/master/fast_impl/core.py#L25" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>arch_summary</code>(<strong><code>arch</code></strong>, <strong><code>idx</code></strong>=<em><code>None</code></em>, <strong><code>verbose</code></strong>=<em><code>False</code></em>)</p>
 </blockquote>
-<p>Short architecture summary, used for holistic understanding of model
-Args:
-    arch: a function or model object
-    idx (int,list): an integer or list of indices to reach desired module in the architecture
-    verbose (bool): If True, will list the names of sub-modules</p>
+<p>Short architecture summary, used for holistic understanding and deciding parameter groups</p>
 
 </div>
 
 </div>
 
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">torchvision.models</span> <span class="kn">import</span> <span class="n">shufflenet_v2_x1_0</span><span class="p">,</span> <span class="n">resnet50</span>
+</pre></div>
+
+    </div>
 </div>
 </div>
 
@@ -124,8 +137,7 @@ Args:
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>densenet121 from torchvision has first <code>_DenseLayer</code> at index [0,4,0], we can look at its brief summary as follows:</p>
-<p><em>(NB: densenet121 implementation is divided into two modules, body and head, directly skipping to body)</em></p>
+<p><a href="/fast_impl/core#arch_summary"><code>arch_summary</code></a> can handle named as well as simple Sequential modules with different behavior. Indices could be used to quickly navigate the architecture, module names are also introduced in summary if available. <code>xresnet50</code> is the architecture defined in <code>fastai2</code> and is extending <code>Sequential</code></p>
 
 </div>
 </div>
@@ -137,7 +149,7 @@ Args:
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">arch_summary</span><span class="p">(</span><span class="n">densenet121</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">arch_summary</span><span class="p">(</span><span class="n">xresnet50</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -150,18 +162,18 @@ Args:
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>(0 ) Conv2d           : 1   layers
-(1 ) BatchNorm2d      : 1   layers
-(2 ) ReLU             : 1   layers
-(3 ) MaxPool2d        : 1   layers
-(4 ) _DenseBlock      : 36  layers
-(5 ) _Transition      : 4   layers
-(6 ) _DenseBlock      : 72  layers
-(7 ) _Transition      : 4   layers
-(8 ) _DenseBlock      : 144 layers
-(9 ) _Transition      : 4   layers
-(10) _DenseBlock      : 96  layers
-(11) BatchNorm2d      : 1   layers
+<pre>[0 ] ConvLayer        : 3   layers
+[1 ] ConvLayer        : 3   layers
+[2 ] ConvLayer        : 3   layers
+[3 ] MaxPool2d        : 1   layers
+[4 ] Sequential       : 3   layers
+[5 ] Sequential       : 4   layers
+[6 ] Sequential       : 6   layers
+[7 ] Sequential       : 3   layers
+[8 ] AdaptiveAvgPool2d: 1   layers
+[9 ] Flatten          : 1   layers
+[10] Dropout          : 1   layers
+[11] Linear           : 1   layers
 </pre>
 </div>
 </div>
@@ -172,6 +184,13 @@ Args:
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="/fast_impl/core#get_module"><code>get_module</code></a> could be used to extract a specific module nested deep within hierarchy.</p>
+
+</div>
+</div>
+</div>
     {% raw %}
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -179,7 +198,7 @@ Args:
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">arch_summary</span><span class="p">(</span><span class="n">densenet121</span><span class="p">,[</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">get_module</span><span class="p">(</span><span class="n">xresnet50</span><span class="p">,[</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 
     </div>
@@ -191,15 +210,36 @@ Args:
 
 <div class="output_area">
 
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>(0 ) BatchNorm2d      : 1   layers
-(1 ) ReLU             : 1   layers
-(2 ) Conv2d           : 1   layers
-(3 ) BatchNorm2d      : 1   layers
-(4 ) ReLU             : 1   layers
-(5 ) Conv2d           : 1   layers
-</pre>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>ResBlock(
+  (convpath): Sequential(
+    (0): ConvLayer(
+      (0): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): ReLU()
+    )
+    (1): ConvLayer(
+      (0): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): ReLU()
+    )
+    (2): ConvLayer(
+      (0): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (idpath): Sequential(
+    (0): ConvLayer(
+      (0): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (act): ReLU(inplace=True)
+)</pre>
 </div>
+
 </div>
 
 </div>
@@ -222,7 +262,7 @@ Args:
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">arch_summary</span><span class="p">(</span><span class="n">densenet121</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">arch_summary</span><span class="p">(</span><span class="n">xresnet50</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -235,88 +275,43 @@ Args:
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>(0 ) Conv2d           : 1   layers
-(1 ) BatchNorm2d      : 1   layers
-(2 ) ReLU             : 1   layers
-(3 ) MaxPool2d        : 1   layers
-(4 ) _DenseBlock      : 36  layers
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-(5 ) _Transition      : 4   layers
+<pre>[0 ] ConvLayer        : 3   layers
+      Conv2d
       BatchNorm2d
       ReLU
+[1 ] ConvLayer        : 3   layers
       Conv2d
-      AvgPool2d
-(6 ) _DenseBlock      : 72  layers
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-(7 ) _Transition      : 4   layers
       BatchNorm2d
       ReLU
+[2 ] ConvLayer        : 3   layers
       Conv2d
-      AvgPool2d
-(8 ) _DenseBlock      : 144 layers
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-(9 ) _Transition      : 4   layers
       BatchNorm2d
       ReLU
-      Conv2d
-      AvgPool2d
-(10) _DenseBlock      : 96  layers
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-      _DenseLayer
-(11) BatchNorm2d      : 1   layers
+[3 ] MaxPool2d        : 1   layers
+[4 ] Sequential       : 3   layers
+      ResBlock
+      ResBlock
+      ResBlock
+[5 ] Sequential       : 4   layers
+      ResBlock
+      ResBlock
+      ResBlock
+      ResBlock
+[6 ] Sequential       : 6   layers
+      ResBlock
+      ResBlock
+      ResBlock
+      ResBlock
+      ResBlock
+      ResBlock
+[7 ] Sequential       : 3   layers
+      ResBlock
+      ResBlock
+      ResBlock
+[8 ] AdaptiveAvgPool2d: 1   layers
+[9 ] Flatten          : 1   layers
+[10] Dropout          : 1   layers
+[11] Linear           : 1   layers
 </pre>
 </div>
 </div>
@@ -327,6 +322,57 @@ Args:
 </div>
     {% endraw %}
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now let's quickly review a named_module architecture and how <a href="/fast_impl/core#arch_summary"><code>arch_summary</code></a> handles that information</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">arch_summary</span><span class="p">(</span><span class="n">shufflenet_v2_x1_0</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[0 ] (conv1)    Sequential       : 3   layers
+[1 ] (maxpool)  MaxPool2d        : 1   layers
+[2 ] (stage2)   Sequential       : 4   layers
+[3 ] (stage3)   Sequential       : 8   layers
+[4 ] (stage4)   Sequential       : 4   layers
+[5 ] (conv5)    Sequential       : 3   layers
+[6 ] (fc)       Linear           : 1   layers
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Refer <a href="./01_tutorial.arch_explore.ipynb">arch_explore</a> for more examples</p>
+
+</div>
+</div>
+</div>
 </div>
  
 

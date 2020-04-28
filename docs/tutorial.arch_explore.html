@@ -1,12 +1,12 @@
 ---
 
-title: Tutorial- Explore CNN architectures using arch_summary
+title: Title
 
 keywords: fastai
 sidebar: home_sidebar
 
-summary: "Exploring CNN architectures from torchvision, fastai2 and pytorch-image-models (timm)"
-description: "Exploring CNN architectures from torchvision, fastai2 and pytorch-image-models (timm)"
+summary: "summary"
+description: "summary"
 ---
 <!--
 
@@ -34,7 +34,8 @@ description: "Exploring CNN architectures from torchvision, fastai2 and pytorch-
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">fastai2.vision.all</span> <span class="kn">import</span> <span class="o">*</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">fastai2.vision.models.xresnet</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">torchvision.models</span> <span class="kn">import</span> <span class="n">resnet50</span>
 <span class="kn">from</span> <span class="nn">fast_impl.core</span> <span class="kn">import</span> <span class="o">*</span>
 </pre></div>
 
@@ -47,14 +48,20 @@ description: "Exploring CNN architectures from torchvision, fastai2 and pytorch-
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><a href="/fast_impl/core#arch_summary"><code>arch_summary</code></a> function plays major role while deciding parameter groups for discriminative learning. It gives a brief summary of architecture and is independant of <code>DataLoaders</code> or <code>Learner</code>. Thus we could use this function to assess the correctness of architecture before passing it to learner.</p>
+<p><a href="/fast_impl/core#arch_summary"><code>arch_summary</code></a> function plays major role while deciding parameter groups for discriminative learning rates. It gives a brief summary of architecture and is independant of input being passed. Thus we could use this function to understand architecture in a glance. We'll briefly explore various vision models from torchvision and <a href="https://github.com/rwightman/pytorch-image-models">pytorch-image-models</a> to understand the use of <a href="/fast_impl/core#arch_summary"><code>arch_summary</code></a></p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="fastai2-models">fastai2 models<a class="anchor-link" href="#fastai2-models"> </a></h2><p>Let's first quickly go through <code>XResNet</code> series offered by <code>fastai2</code></p>
+<h2 id="XResNet-(fastai2)">XResNet (fastai2)<a class="anchor-link" href="#XResNet-(fastai2)"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's first quickly go through <code>XResNet</code> series offered by <code>fastai2</code></p>
 <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">xresnet18</span> <span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="k">return</span> <span class="n">_xresnet</span><span class="p">(</span><span class="n">pretrained</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </pre></div>
 
@@ -81,18 +88,18 @@ description: "Exploring CNN architectures from torchvision, fastai2 and pytorch-
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>(0 ) ConvLayer        : 3   layers
-(1 ) ConvLayer        : 3   layers
-(2 ) ConvLayer        : 3   layers
-(3 ) MaxPool2d        : 1   layers
-(4 ) Sequential       : 2   layers
-(5 ) Sequential       : 2   layers
-(6 ) Sequential       : 2   layers
-(7 ) Sequential       : 2   layers
-(8 ) AdaptiveAvgPool2d: 1   layers
-(9 ) Flatten          : 1   layers
-(10) Dropout          : 1   layers
-(11) Linear           : 1   layers
+<pre>[0 ] ConvLayer        : 3   layers
+[1 ] ConvLayer        : 3   layers
+[2 ] ConvLayer        : 3   layers
+[3 ] MaxPool2d        : 1   layers
+[4 ] Sequential       : 2   layers
+[5 ] Sequential       : 2   layers
+[6 ] Sequential       : 2   layers
+[7 ] Sequential       : 2   layers
+[8 ] AdaptiveAvgPool2d: 1   layers
+[9 ] Flatten          : 1   layers
+[10] Dropout          : 1   layers
+[11] Linear           : 1   layers
 </pre>
 </div>
 </div>
@@ -105,7 +112,7 @@ description: "Exploring CNN architectures from torchvision, fastai2 and pytorch-
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Look at the Sequential layers from 4-7 all having two child layers, that's the meaning of <code>[2,2,2,2]</code> in the model definition. Let's go deeper and check what are those children</p>
+<p>Look at the Sequential layers from 4-7 all having two child layers, that's the meaning of <code>[2,2,2,2]</code> in the model definition. Let's go deeper and check what are these two children</p>
 
 </div>
 </div>
@@ -130,35 +137,35 @@ description: "Exploring CNN architectures from torchvision, fastai2 and pytorch-
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>(0 ) ConvLayer        : 3   layers
+<pre>[0 ] ConvLayer        : 3   layers
       Conv2d
       BatchNorm2d
       ReLU
-(1 ) ConvLayer        : 3   layers
+[1 ] ConvLayer        : 3   layers
       Conv2d
       BatchNorm2d
       ReLU
-(2 ) ConvLayer        : 3   layers
+[2 ] ConvLayer        : 3   layers
       Conv2d
       BatchNorm2d
       ReLU
-(3 ) MaxPool2d        : 1   layers
-(4 ) Sequential       : 2   layers
+[3 ] MaxPool2d        : 1   layers
+[4 ] Sequential       : 2   layers
       ResBlock
       ResBlock
-(5 ) Sequential       : 2   layers
+[5 ] Sequential       : 2   layers
       ResBlock
       ResBlock
-(6 ) Sequential       : 2   layers
+[6 ] Sequential       : 2   layers
       ResBlock
       ResBlock
-(7 ) Sequential       : 2   layers
+[7 ] Sequential       : 2   layers
       ResBlock
       ResBlock
-(8 ) AdaptiveAvgPool2d: 1   layers
-(9 ) Flatten          : 1   layers
-(10) Dropout          : 1   layers
-(11) Linear           : 1   layers
+[8 ] AdaptiveAvgPool2d: 1   layers
+[9 ] Flatten          : 1   layers
+[10] Dropout          : 1   layers
+[11] Linear           : 1   layers
 </pre>
 </div>
 </div>
@@ -171,7 +178,7 @@ description: "Exploring CNN architectures from torchvision, fastai2 and pytorch-
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>hmm... those are indeed <code>ResBlocks</code>, but what is <code>ResBlock</code>?</p>
+<p>hmm... those are indeed <code>ResBlocks</code>, but what is <code>ResBlock</code>? Often it's good idea to print out model specific blocks, as sometimes, no. of input/output channels is the novelty of it (eg. WideResnet). We can use our <a href="/fast_impl/core#get_module"><code>get_module</code></a> method for this which requires you to pass in list of indices to reach that block.</p>
 
 </div>
 </div>
@@ -183,7 +190,7 @@ description: "Exploring CNN architectures from torchvision, fastai2 and pytorch-
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">arch_summary</span><span class="p">(</span><span class="n">xresnet18</span><span class="p">,[</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">get_module</span><span class="p">(</span><span class="n">xresnet18</span><span class="p">,[</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 
     </div>
@@ -195,14 +202,26 @@ description: "Exploring CNN architectures from torchvision, fastai2 and pytorch-
 
 <div class="output_area">
 
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>(0 ) Sequential       : 2   layers
-      ConvLayer
-      ConvLayer
-(1 ) Sequential       : 0   layers
-(2 ) ReLU             : 1   layers
-</pre>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>ResBlock(
+  (convpath): Sequential(
+    (0): ConvLayer(
+      (0): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (2): ReLU()
+    )
+    (1): ConvLayer(
+      (0): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+      (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    )
+  )
+  (idpath): Sequential()
+  (act): ReLU(inplace=True)
+)</pre>
 </div>
+
 </div>
 
 </div>
@@ -220,23 +239,435 @@ description: "Exploring CNN architectures from torchvision, fastai2 and pytorch-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>According to <a href="https://arxiv.org/abs/1512.03385">ResNet</a>, we should have two weight layers, an identity (skip-connection) block and activation (ReLU), which is exactly <code>ResBlock</code> implements, with many <a href="https://arxiv.org/abs/1812.01187">tweaks</a> introduced in the following years to improve the performance. A <code>ConvLayer</code> in fastai is basically Conv2D --&gt; BatchNorm --&gt; Activation (ReLU) but we can infinitely customize this building block; you might want to have a look at its <a href="https://github.com/fastai/fastai2/blob/a1204f7ba005fe92e09763f2b68dd9fb4ef11846/fastai2/layers.py#L230">implementation</a>. For rest of <code>xresnet</code> family, we'll have the exact same architecture but with more "groups" of <code>ResBlock</code>, such as</p>
+<p>According to <a href="https://arxiv.org/abs/1512.03385">ResNet</a>, we should have two weight layers, an identity (skip-connection) block and activation (ReLU), which is exactly <code>ResBlock</code> implements, with many <a href="https://arxiv.org/abs/1812.01187">tweaks</a> introduced in the following years to improve the performance. A <code>ConvLayer</code> in fastai is Conv2D --&gt; BatchNorm --&gt; activation (ReLU). For the other variants of xresnet, we'll have exact same architecture but with more "groups" of <code>ResBlock</code>, such as</p>
 <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">xresnet34</span> <span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="k">return</span> <span class="n">_xresnet</span><span class="p">(</span><span class="n">pretrained</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">xresnet50</span> <span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="k">return</span> <span class="n">_xresnet</span><span class="p">(</span><span class="n">pretrained</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">xresnet101</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="k">return</span> <span class="n">_xresnet</span><span class="p">(</span><span class="n">pretrained</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">xresnet152</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="k">return</span> <span class="n">_xresnet</span><span class="p">(</span><span class="n">pretrained</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </pre></div>
-<p><code>xresnet34</code> will have 4 groups having <code>[3, 4, 6, 3]</code> no. of <code>ResBlocks</code> and so on. We do get other variants of these base architecutures but as they're still experimental, I'll skip them for now. Now let's have a look at some architectures from torchvision. I've already explained <code>densenet121</code> in <a href="core.ipynb">core</a> notebook</p>
+<p><code>xresnet34</code> will have 4 groups having <code>[3, 4, 6, 3]</code> no. of <code>ResBlocks</code> and so on. We do get other variants of these base architecutures but as they're still experimental, I'll skip them for now. Now let's have a look at some architectures from torchvision.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="torchvision-models">torchvision models<a class="anchor-link" href="#torchvision-models"> </a></h2>
+<h2 id="MNasNet-(torchvision)">MNasNet (torchvision)<a class="anchor-link" href="#MNasNet-(torchvision)"> </a></h2>
 </div>
 </div>
 </div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">torchvision.models</span> <span class="kn">import</span> <span class="n">MNASNet</span>
+<span class="n">mnasnet</span> <span class="o">=</span> <span class="n">MNASNet</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>First 7 layers are stem of the network while 8 to 13 seems like some specific blocks of this architecture.</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">arch_summary</span><span class="p">(</span><span class="n">mnasnet</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[0 ] Conv2d           : 1   layers
+[1 ] BatchNorm2d      : 1   layers
+[2 ] ReLU             : 1   layers
+[3 ] Conv2d           : 1   layers
+[4 ] BatchNorm2d      : 1   layers
+[5 ] ReLU             : 1   layers
+[6 ] Conv2d           : 1   layers
+[7 ] BatchNorm2d      : 1   layers
+[8 ] Sequential       : 3   layers
+[9 ] Sequential       : 3   layers
+[10] Sequential       : 3   layers
+[11] Sequential       : 2   layers
+[12] Sequential       : 4   layers
+[13] Sequential       : 1   layers
+[14] Conv2d           : 1   layers
+[15] BatchNorm2d      : 1   layers
+[16] ReLU             : 1   layers
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">arch_summary</span><span class="p">(</span><span class="n">mnasnet</span><span class="p">,[</span><span class="mi">0</span><span class="p">,</span><span class="mi">8</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[0 ] _InvertedResidual: 8   layers
+[1 ] _InvertedResidual: 8   layers
+[2 ] _InvertedResidual: 8   layers
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Yup, they're <code>InvertedResidual</code> blocks. Let's find out what is <code>InvertedResidualBlock</code></p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">get_module</span><span class="p">(</span><span class="n">mnasnet</span><span class="p">,[</span><span class="mi">0</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>_InvertedResidual(
+  (layers): Sequential(
+    (0): Conv2d(16, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+    (1): BatchNorm2d(48, eps=1e-05, momentum=0.00029999999999996696, affine=True, track_running_stats=True)
+    (2): ReLU(inplace=True)
+    (3): Conv2d(48, 48, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), groups=48, bias=False)
+    (4): BatchNorm2d(48, eps=1e-05, momentum=0.00029999999999996696, affine=True, track_running_stats=True)
+    (5): ReLU(inplace=True)
+    (6): Conv2d(48, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+    (7): BatchNorm2d(24, eps=1e-05, momentum=0.00029999999999996696, affine=True, track_running_stats=True)
+  )
+)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>{% include image.html alt="Inverted Residual" style="width:50%;" file="/fast_impl/images/inverted_residual.png" %}</p>
+<p>If you spot the difference, Residual Blocks have a fat input block being shrunk down before performing actual 3 &times; 3 convolution whereas inverted residuals have exact opposite picture.</p>
+<p>A compact input block is first expanded, the convolution op is performed and again that block is compressed back to a compact version.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="WideResnet">WideResnet<a class="anchor-link" href="#WideResnet"> </a></h2>
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">torchvision.models</span> <span class="kn">import</span> <span class="n">wide_resnet50_2</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">arch_summary</span><span class="p">(</span><span class="n">wide_resnet50_2</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[0 ] (conv1)    Conv2d           : 1   layers
+[1 ] (bn1)      BatchNorm2d      : 1   layers
+[2 ] (relu)     ReLU             : 1   layers
+[3 ] (maxpool)  MaxPool2d        : 1   layers
+[4 ] (layer1)   Sequential       : 3   layers
+[5 ] (layer2)   Sequential       : 4   layers
+[6 ] (layer3)   Sequential       : 6   layers
+[7 ] (layer4)   Sequential       : 3   layers
+[8 ] (avgpool)  AdaptiveAvgPool2d: 1   layers
+[9 ] (fc)       Linear           : 1   layers
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If you look at the sequential layers, they do have no. of children exact similar to <code>resnet50</code>, while the key difference here is no. of input and output channels of their special block. Let's figure out what it is</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">arch_summary</span><span class="p">(</span><span class="n">wide_resnet50_2</span><span class="p">,[</span><span class="mi">4</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[0 ] Bottleneck       : 9   layers
+[1 ] Bottleneck       : 7   layers
+[2 ] Bottleneck       : 7   layers
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>You can also use the module names listed above to get required module, but you might need to take care of instantiating an object</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">arch_summary</span><span class="p">(</span><span class="n">wide_resnet50_2</span><span class="p">()</span><span class="o">.</span><span class="n">layer1</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[0 ] Bottleneck       : 9   layers
+[1 ] Bottleneck       : 7   layers
+[2 ] Bottleneck       : 7   layers
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As discussed earlier, we'll be using <a href="/fast_impl/core#get_module"><code>get_module</code></a> to find exact definition of <code>Bottleneck</code> block</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">get_module</span><span class="p">(</span><span class="n">wide_resnet50_2</span><span class="p">,[</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Bottleneck(
+  (conv1): Conv2d(64, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+  (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+  (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (conv3): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+  (bn3): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (relu): ReLU(inplace=True)
+  (downsample): Sequential(
+    (0): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+    (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  )
+)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's compare it with original <code>resnet50</code>. The idea proposed by <code>WideResnet</code> was having more channels in the bottleneck layers to exploit the parallelism offered by GPUs. Thus wideresnets take lesser time to train and to reach the error rate achieved by resnets.</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">get_module</span><span class="p">(</span><span class="n">resnet50</span><span class="p">,[</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Bottleneck(
+  (conv1): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+  (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+  (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+  (bn3): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  (relu): ReLU(inplace=True)
+  (downsample): Sequential(
+    (0): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+    (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  )
+)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
 </div>
  
 
