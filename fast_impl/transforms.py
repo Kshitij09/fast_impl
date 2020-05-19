@@ -22,7 +22,7 @@ class GlobalContrastNorm(Transform):
     store_attr(self,'s,eps,lmbda')
 
   def encodes(self, x:TensorImage):
-    contrast = (x.var((1,2,3),keepdim=True)+self.lmbda).sqrt().clamp_(eps)
+    contrast = (x.var((1,2,3),keepdim=True)+self.lmbda).sqrt().clamp_(self.eps)
     return self.s * (x - x.mean((1,2,3),keepdim=True)) / contrast
 
   def decodes(self,x:TensorImage): return min_max_scale(x)
