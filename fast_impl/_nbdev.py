@@ -3,9 +3,12 @@
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
 index = {"get_module": "core.ipynb",
-         "arch_summary": "core.ipynb"}
+         "arch_summary": "core.ipynb",
+         "min_max_scale": "preprocessing.ipynb",
+         "GlobalContrastNorm": "preprocessing.ipynb"}
 
-modules = ["core.py"]
+modules = ["core.py",
+           "transforms.py"]
 
 doc_url = "https://Kshitij09.github.io/fast_impl/"
 
