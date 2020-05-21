@@ -5,7 +5,9 @@ __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 index = {"get_module": "core.ipynb",
          "arch_summary": "core.ipynb",
          "min_max_scale": "preprocessing.ipynb",
-         "GlobalContrastNorm": "preprocessing.ipynb"}
+         "norm": "preprocessing.ipynb",
+         "GlobalContrastNorm": "preprocessing.ipynb",
+         "ZCAWhitenWrapper": "preprocessing.ipynb"}
 
 modules = ["core.py",
            "transforms.py"]
