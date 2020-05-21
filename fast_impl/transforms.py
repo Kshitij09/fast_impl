@@ -4,6 +4,8 @@ __all__ = ['min_max_scale', 'norm', 'GlobalContrastNorm', 'ZCAWhitenWrapper']
 
 # Cell
 from fastai2.vision.all import *
+import kornia
+from kornia.color import ZCAWhitening
 
 # Cell
 def min_max_scale(x:Tensor,min=0,max=1):
@@ -34,9 +36,6 @@ class GlobalContrastNorm(Transform):
     return self.s * (x - x.mean((1,2,3),keepdim=True)) / contrast
 
   def decodes(self,x:TensorImage): return min_max_scale(x)
-
-# Cell
-import kornia
 
 # Cell
 class ZCAWhitenWrapper(Transform,GetAttr):
