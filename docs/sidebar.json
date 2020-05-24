@@ -1,11 +1,29 @@
 {
   "Overview": "/",
   "Tutorial": {
-    "Overview":"/tutorial",
+    "Overview": "/tutorial",
     "Explore Architectures": "/tutorial.arch_explore",
-    "Stanford Dogs Wrangling":"/tutorial.stanford_dogs_wrangling"    
+    "Stanford Dogs Wrangling": "/tutorial.stanford_dogs_wrangling"
   },
   "Core": {
     "Overview": "/core"
+  },
+  "Paper Implementations": {
+    "Overview": "/paper_impl",
+    "": {
+      "CNN Visualizations": {
+        "CAM": "/visualize.cam",
+        "Grad-CAM": "visualize.grad_cam"
+      }
+    }
+  },
+  "Applications": {
+    "Overview": "/applications",
+    "": {
+      "Classification": {
+        "AlexNet-Cifar10": "/AlexNet_cifar10",
+        "NiN-Cifar10": "/NiN_cifar10"
+      }
+    }
   }
 }

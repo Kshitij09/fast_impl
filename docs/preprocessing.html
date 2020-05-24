@@ -162,7 +162,7 @@ sidebar: home_sidebar
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="min_max_scale" class="doc_header"><code>min_max_scale</code><a href="https://github.com/Kshitij09/fast_impl/tree/master/fast_impl/transforms.py#L11" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>min_max_scale</code>(<strong><code>x</code></strong>:<code>Tensor</code>, <strong><code>min</code></strong>=<em><code>0</code></em>, <strong><code>max</code></strong>=<em><code>1</code></em>)</p>
+<h4 id="min_max_scale" class="doc_header"><code>min_max_scale</code><a href="https://github.com/Kshitij09/fast_impl/tree/master/fast_impl/core.py#L39" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>min_max_scale</code>(<strong><code>x</code></strong>:<code>Tensor</code>, <strong><code>min</code></strong>=<em><code>0</code></em>, <strong><code>max</code></strong>=<em><code>1</code></em>)</p>
 </blockquote>
 
 </div>
@@ -193,7 +193,7 @@ sidebar: home_sidebar
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="norm" class="doc_header"><code>norm</code><a href="https://github.com/Kshitij09/fast_impl/tree/master/fast_impl/transforms.py#L15" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>norm</code>(<strong><code>x</code></strong>:<code>Tensor</code>)</p>
+<h4 id="norm" class="doc_header"><code>norm</code><a href="https://github.com/Kshitij09/fast_impl/tree/master/fast_impl/core.py#L43" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>norm</code>(<strong><code>x</code></strong>:<code>Tensor</code>)</p>
 </blockquote>
 <p>Borrowed from torchvision.utils</p>
 
@@ -236,7 +236,7 @@ $$</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="GlobalContrastNorm" class="doc_header"><code>class</code> <code>GlobalContrastNorm</code><a href="https://github.com/Kshitij09/fast_impl/tree/master/fast_impl/transforms.py#L20" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GlobalContrastNorm</code>(<strong><code>s</code></strong>=<em><code>1</code></em>, <strong><code>eps</code></strong>=<em><code>1e-08</code></em>, <strong><code>lmbda</code></strong>=<em><code>0.0</code></em>, <strong><code>decode_norm</code></strong>=<em><code>True</code></em>) :: <code>Transform</code></p>
+<h2 id="GlobalContrastNorm" class="doc_header"><code>class</code> <code>GlobalContrastNorm</code><a href="https://github.com/Kshitij09/fast_impl/tree/master/fast_impl/transforms.py#L11" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GlobalContrastNorm</code>(<strong><code>s</code></strong>=<em><code>1</code></em>, <strong><code>eps</code></strong>=<em><code>1e-08</code></em>, <strong><code>lmbda</code></strong>=<em><code>0.0</code></em>, <strong><code>decode_norm</code></strong>=<em><code>True</code></em>) :: <code>Transform</code></p>
 </blockquote>
 <p>prevents images from having varying contrast
 reference: Deep Learning book (section 12.2.1.1 pg.455)
@@ -466,7 +466,7 @@ decodes used for <code>show_batch</code>, not to reverse the transform.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ZCAWhitenWrapper" class="doc_header"><code>class</code> <code>ZCAWhitenWrapper</code><a href="https://github.com/Kshitij09/fast_impl/tree/master/fast_impl/transforms.py#L43" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ZCAWhitenWrapper</code>(<strong><code>decode_norm</code></strong>=<em><code>True</code></em>, <strong><code>dim</code></strong>:<code>int</code>=<em><code>0</code></em>, <strong><code>eps</code></strong>:<code>float</code>=<em><code>1e-06</code></em>, <strong><code>unbiased</code></strong>:<code>bool</code>=<em><code>True</code></em>, <strong><code>detach_transforms</code></strong>:<code>bool</code>=<em><code>True</code></em>, <strong><code>compute_inv</code></strong>:<code>bool</code>=<em><code>False</code></em>) :: <code>Transform</code></p>
+<h2 id="ZCAWhitenWrapper" class="doc_header"><code>class</code> <code>ZCAWhitenWrapper</code><a href="https://github.com/Kshitij09/fast_impl/tree/master/fast_impl/transforms.py#L34" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ZCAWhitenWrapper</code>(<strong><code>decode_norm</code></strong>=<em><code>True</code></em>, <strong><code>dim</code></strong>:<code>int</code>=<em><code>0</code></em>, <strong><code>eps</code></strong>:<code>float</code>=<em><code>1e-06</code></em>, <strong><code>unbiased</code></strong>:<code>bool</code>=<em><code>True</code></em>, <strong><code>detach_transforms</code></strong>:<code>bool</code>=<em><code>True</code></em>, <strong><code>compute_inv</code></strong>:<code>bool</code>=<em><code>False</code></em>) :: <code>Transform</code></p>
 </blockquote>
 <p>Wrapping kornia implementation</p>
 
