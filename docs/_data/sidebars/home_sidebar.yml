@@ -26,5 +26,37 @@ entries:
       url: /core
     output: web
     title: Core
+  - folderitems:
+    - output: web,pdf
+      title: Overview
+      url: /paper_impl
+      subfolders:
+      - output: web
+        subfolderitems:
+        - output: web,pdf
+          title: CAM
+          url: /visualize.cam
+        - output: web,pdf
+          title: Grad-CAM
+          url: visualize.grad_cam
+        title: CNN Visualizations
+    output: web
+    title: Paper Implementations
+  - folderitems:
+    - output: web,pdf
+      title: Overview
+      url: /applications
+      subfolders:
+      - output: web
+        subfolderitems:
+        - output: web,pdf
+          title: AlexNet-Cifar10
+          url: /AlexNet_cifar10
+        - output: web,pdf
+          title: NiN-Cifar10
+          url: /NiN_cifar10
+        title: Classification
+    output: web
+    title: Applications
   output: web
   title: Sidebar
