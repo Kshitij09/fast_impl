@@ -7,10 +7,15 @@ index = {"get_module": "core.ipynb",
          "min_max_scale": "preprocessing.ipynb",
          "norm": "preprocessing.ipynb",
          "GlobalContrastNorm": "preprocessing.ipynb",
-         "ZCAWhitenWrapper": "preprocessing.ipynb"}
+         "ZCAWhitenWrapper": "preprocessing.ipynb",
+         "show_heatmap": "visualize.grad_cam.ipynb",
+         "create_batch": "visualize.grad_cam.ipynb",
+         "GuidedBackprop": "visualize.grad_cam.ipynb",
+         "to_grayscale": "visualize.grad_cam.ipynb"}
 
 modules = ["core.py",
-           "transforms.py"]
+           "transforms.py",
+           "visualize.py"]
 
 doc_url = "https://Kshitij09.github.io/fast_impl/"
 
