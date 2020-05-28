@@ -51,9 +51,10 @@ class ZCAWhitenWrapper(Transform):
     if self.decode_norm: return norm(x)
     return x
 
+
 # Comes from visualize.grad_cam.ipynb, cell
 def to_grayscale(im_tensor):
-  gray_tensor = gbprop.sum(0)
+  gray_tensor = im_tensor.sum(0)
   im_max = np.percentile(gray_tensor.cpu().numpy(),99)
   im_min = gray_tensor.min()
   return torch.clamp((gray_tensor-im_min)/(im_max-im_min),0,1)[None]
