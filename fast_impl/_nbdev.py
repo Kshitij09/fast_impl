@@ -2,16 +2,24 @@
 
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
-index = {"get_module": "core.ipynb",
-         "arch_summary": "core.ipynb",
-         "min_max_scale": "preprocessing.ipynb",
-         "norm": "preprocessing.ipynb",
-         "GlobalContrastNorm": "preprocessing.ipynb",
-         "ZCAWhitenWrapper": "preprocessing.ipynb",
-         "show_heatmap": "visualize.grad_cam.ipynb",
-         "create_batch": "visualize.grad_cam.ipynb",
-         "GuidedBackprop": "visualize.grad_cam.ipynb",
-         "to_grayscale": "visualize.grad_cam.ipynb"}
+index = {"get_module": "00_core.ipynb",
+         "arch_summary": "00_core.ipynb",
+         "min_max_scale": "02_preprocessing.ipynb",
+         "norm": "02_preprocessing.ipynb",
+         "GlobalContrastNorm": "02_preprocessing.ipynb",
+         "ZCAWhitenWrapper": "02_preprocessing.ipynb",
+         "show_heatmap": "08_visualize.grad_cam.ipynb",
+         "create_batch": "08_visualize.grad_cam.ipynb",
+         "GuidedBackprop": "08_visualize.grad_cam.ipynb",
+         "to_grayscale": "08_visualize.grad_cam.ipynb",
+         "generate_cam": "09_CNN_Interpreter.ipynb",
+         "CamImage": "09_CNN_Interpreter.ipynb",
+         "get_at": "09_CNN_Interpreter.ipynb",
+         "show_at": "09_CNN_Interpreter.ipynb",
+         "show_cam_batch": "09_CNN_Interpreter.ipynb",
+         "BaseInterpreter": "09_CNN_Interpreter.ipynb",
+         "batch_none": "09_CNN_Interpreter.ipynb",
+         "CamInterpreter": "09_CNN_Interpreter.ipynb"}
 
 modules = ["core.py",
            "transforms.py",
