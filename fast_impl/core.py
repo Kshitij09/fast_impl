@@ -35,11 +35,11 @@ def arch_summary(arch,idx=None,verbose=False):
         for il in layers:
           print(" "*(5 + (15 if not n.isdigit() else 0)),il)
 
-# Comes from 02_preprocessing.ipynb, cell
+# Comes from 01_preprocessing.ipynb, cell
 def min_max_scale(x:Tensor,min=0,max=1):
   return min + ((x-x.min()) * (max-min)) / (x.max()-x.min())
 
-# Comes from 02_preprocessing.ipynb, cell
+# Comes from 01_preprocessing.ipynb, cell
 def norm(x:Tensor):
   "Borrowed from torchvision.utils"
   return x.add(-x.min()).div(x.max()-x.min()+1e-5)
