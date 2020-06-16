@@ -184,10 +184,10 @@ def show_at(model,dl,xb,yb,idx,merge=True,for_cls=None,gen=generate_cam):
   get_at(batch_dec,cam_b,y_preds,dl.vocab,idx=0,for_cls=for_cls).show(merge=merge)
 
 # Cell
-def show_cam_batch(xb,yb,cam_batch,y_preds,max_n=9,merge=True,nrows=None, ncols=None, figsize=None):
+def show_cam_batch(xb,yb,dl,cam_batch,y_preds,max_n=9,merge=True,nrows=None, ncols=None, figsize=None):
   ctxs = get_grid(min(xb.shape[0],max_n),double=(not merge),add_vert=4,title='Target/Prediction')
-  batch_dec = dls.decode_batch((xb,yb))
-  getter = partial(get_at,batch_dec,cam_batch,y_preds,dls.vocab)
+  batch_dec = dl.decode_batch((xb,yb))
+  getter = partial(get_at,batch_dec,cam_batch,y_preds,dl.vocab)
   if merge:
     for idx,ctx in enumerate(ctxs):
       cam_img = getter(idx)
@@ -201,7 +201,7 @@ def show_cam_batch(xb,yb,cam_batch,y_preds,max_n=9,merge=True,nrows=None, ncols=
 class BaseInterpreter:
   def __init__(self,model:nn.Module,valid_dl:DataLoader=None):
     self.model = copy.copy(model.eval())
-    self.valid_dl = ifnone(valid_dl,copy.copy(dls.valid))
+    self.valid_dl = valid_dl
     self.valid_dl.shuffle=True
     self.vocab = valid_dl.vocab
 
@@ -251,7 +251,7 @@ class CamInterpreter(BaseInterpreter):
     if batch_none(xb,yb):
       xb,yb = self.valid_dl.one_batch()
     cam_batch,y_preds = self.generate(xb,with_preds=True)
-    show_cam_batch(xb,yb,cam_batch,y_preds,**kwargs)
+    show_cam_batch(xb,yb,self.valid_dl,cam_batch,y_preds,**kwargs)
 
 # Cell
 def generate_gradcam(model,x,y=None,act_path:list=[0],with_preds=False):
@@ -288,13 +288,13 @@ def get_gcam_at(batch_dec,cam_batch,y_preds,vocab,idx):
   return CamImage(x,y,vocab[class_id],cam_i)
 
 # Cell
-def show_gradcam_batch(xb,yb,cam_batch,y_preds,vocab,max_n=9,cmap='magma',
+def show_gradcam_batch(xb,yb,dl,cam_batch,y_preds,max_n=9,cmap='magma',
                        merge=True,guided=False,nrows=None, ncols=None,
                        figsize=None):
   merge = merge and not guided
   ctxs = get_grid(min(xb.shape[0],max_n),double=(not merge),add_vert=4,title='Target/Prediction')
-  batch_dec = dls.decode_batch((xb,yb))
-  getter = partial(get_gcam_at,batch_dec,cam_batch,y_preds,vocab)
+  batch_dec = dl.decode_batch((xb,yb))
+  getter = partial(get_gcam_at,batch_dec,cam_batch,y_preds,dl.vocab)
   if merge:
     for idx,ctx in enumerate(ctxs):
       cam_img = getter(idx)
@@ -316,7 +316,7 @@ class GradCamInterpreter(BaseInterpreter):
       self.xb,self.yb = xb,yb # store for future reference
 
     for x,y in zip(xb,yb):
-      gcam,preds = generate_gradcam(m,x,y,act_path=act_path,with_preds=True)
+      gcam,preds = generate_gradcam(self.model,x,y,act_path=act_path,with_preds=True)
 
       if guided:
         gbviz = GuidedBackprop(self.model)
@@ -350,8 +350,8 @@ class GradCamInterpreter(BaseInterpreter):
 
     cam_batch,y_preds = self.generate(xb,yb,act_path=act_path,guided=guided,with_preds=True)
     if guided:
-      cam_batch = kornia.rgb_to_grayscale(cam_batch)
-    show_gradcam_batch(self.xb,self.yb,cam_batch,y_preds,self.vocab,guided=guided,**kwargs)
+      cam_batch = min_max_scale(cam_batch)
+    show_gradcam_batch(self.xb,self.yb,self.valid_dl,cam_batch,y_preds,guided=guided,**kwargs)
 
   def show_at(self,idx,xb=None,yb=None,merge=True,cmap='magma',
               for_cls=None,act_path:list=[0],guided=False):
@@ -366,5 +366,7 @@ class GradCamInterpreter(BaseInterpreter):
 
     batch_dec = self.valid_dl.decode_batch((xib,yib))
     cam_b,y_preds = self.generate(xib,yib,guided=guided,with_preds=True)
-    # if guided: cam_b = kornia.rgb_to_grayscale(cam_b)
+    if guided:
+        # cam_b = kornia.rgb_to_grayscale(cam_b)
+        cam_b = min_max_scale(cam_b)
     get_gcam_at(batch_dec,cam_b,y_preds,self.vocab,idx=0).show(merge=merge,y_image=True,cmap=cmap)

@@ -7,11 +7,11 @@
 The github [repository](https://github.com/Kshitij09/fast_impl/) holds application notebooks.
 
 # Installation
-## Latest release
+## latest release
 ```shell
 pip install fast-impl
 ```
-## From sources
+## From git repository (for changes not released yet)
 ```shell
 pip install git+https://github.com/Kshitij09/fast_impl
 ```

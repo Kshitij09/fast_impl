@@ -141,3 +141,7 @@ checklink/cookies.txt
 
 # symlinks
 nbs/fast_impl
+
+nbs/data
+
+nbs/models
